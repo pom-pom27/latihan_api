@@ -7,8 +7,8 @@ class MenuFragment extends StatelessWidget {
       child: ListView(
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountEmail: Text('jerrysibarani@gmail.com'),
-            accountName: Text('Jerry Sibarani'),
+            accountEmail: Text('ptok.citer@gmail.com'),
+            accountName: Text('Muhammad Vicky'),
             currentAccountPicture: CircleAvatar(
                 child: new Icon(
               Icons.person,
@@ -19,7 +19,6 @@ class MenuFragment extends StatelessWidget {
             title: Text("Home"),
             leading: Icon(Icons.home),
             onTap: () {
-              // Navigator.of(context).popAndPushNamed("/home");
               Navigator.of(context).pushNamed("/Home");
             },
           ),
@@ -27,8 +26,14 @@ class MenuFragment extends StatelessWidget {
             title: Text("Dictionary"),
             leading: Icon(Icons.book),
             onTap: () {
-              // Navigator.of(context).popAndPushNamed("/Dictionary");
               Navigator.of(context).pushNamed("/Dictionary");
+            },
+          ),
+          ListTile(
+            title: Text("Item"),
+            leading: Icon(Icons.work),
+            onTap: () {
+              Navigator.of(context).pushNamed("/Item");
             },
           ),
         ],

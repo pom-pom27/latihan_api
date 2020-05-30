@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:latihan_api/entities/Item.dart';
 
-import 'package:latihan_api/entities/Dictionary.dart';
 import 'dart:async';
 
-import 'package:latihan_api/models/Mdictionary.dart';
+import 'package:latihan_api/models/Mitem.dart';
 import 'package:latihan_api/ui/fragment/MenuFragment.dart';
 
-import 'DictionaryInputPage.dart';
+import 'ItemInputPage.dart';
 
-class DictionaryIndexPage extends StatefulWidget {
+class ItemIndexPage extends StatefulWidget {
   @override
-  DictionaryIndexPageState createState() => DictionaryIndexPageState();
+  ItemIndexPageState createState() => ItemIndexPageState();
 }
 
-class DictionaryIndexPageState extends State<DictionaryIndexPage> {
-  var _mdictionary = new Mdictionary();
+class ItemIndexPageState extends State<ItemIndexPage> {
+  var _mitem = new Mitem();
   int count = 0;
-  List<Dictionary> dictionaryList;
+  List<Item> itemList;
   @override
   Widget build(BuildContext context) {
-    if (dictionaryList == null) {
-      dictionaryList = List<Dictionary>();
+    if (itemList == null) {
+      itemList = List<Item>();
     }
     Future.microtask(() {
       this.updateListView();
     });
     return Scaffold(
       appBar: AppBar(
-        title: Text('List Dictionary'),
+        title: Text('List Item'),
       ),
       drawer: MenuFragment(),
       body: createListView(),
@@ -42,11 +42,11 @@ class DictionaryIndexPageState extends State<DictionaryIndexPage> {
     );
   }
 
-  Future<Dictionary> pushAndGetFormInputResult(
-      BuildContext context, Dictionary contact) async {
+  Future<Item> pushAndGetFormInputResult(
+      BuildContext context, Item contact) async {
     var result = await Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) {
-      return DictionaryInputPage(contact);
+      return ItemInputPage(contact);
     }));
     return result;
   }
@@ -65,19 +65,19 @@ class DictionaryIndexPageState extends State<DictionaryIndexPage> {
               size: 45,
             ),
             title: Text(
-              this.dictionaryList[index].word,
+              this.itemList[index].item_code,
               style: textStyle,
             ),
-            subtitle: Text(this.dictionaryList[index].description),
+            subtitle: Text(this.itemList[index].item_code),
             trailing: GestureDetector(
               child: Icon(Icons.delete),
               onTap: () {
-                deleteData(dictionaryList[index]);
+                deleteData(itemList[index]);
               },
             ),
             onTap: () async {
               var contact = await pushAndGetFormInputResult(
-                  context, this.dictionaryList[index]);
+                  context, this.itemList[index]);
               if (contact != null) editData(contact);
             },
           ),
@@ -86,32 +86,32 @@ class DictionaryIndexPageState extends State<DictionaryIndexPage> {
     );
   }
 
-  void addData(Dictionary object) async {
-    int result = await _mdictionary.insert(object);
+  void addData(Item object) async {
+    int result = await _mitem.insert(object);
     if (result > 0) {
       updateListView();
     }
   }
 
-  void editData(Dictionary object) async {
-    int result = await _mdictionary.update(object);
+  void editData(Item object) async {
+    int result = await _mitem.update(object);
     if (result > 0) {
       updateListView();
     }
   }
 
-  void deleteData(Dictionary object) async {
-    int result = await _mdictionary.delete(object.id);
+  void deleteData(Item object) async {
+    int result = await _mitem.delete(object.id);
     if (result > 0) {
       updateListView();
     }
   }
 
   void updateListView() {
-    Future<List<Dictionary>> dictionaryListFuture = _mdictionary.getList();
-    dictionaryListFuture.then((resultList) {
+    Future<List<Item>> itemListFuture = _mitem.getList();
+    itemListFuture.then((resultList) {
       setState(() {
-        this.dictionaryList = resultList;
+        this.itemList = resultList;
         this.count = resultList.length;
       });
     });
